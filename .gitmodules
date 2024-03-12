@@ -1,0 +1,9 @@
+[submodule "vendors/easyloggingpp"]
+	path = vendors/easyloggingpp
+	url = git@github.com:amrayn/easyloggingpp.git
+[submodule "vendors/cpp-httplib"]
+	path = vendors/cpp-httplib
+	url = git@github.com:yhirose/cpp-httplib.git
+[submodule "vendors/spdlog"]
+	path = vendors/spdlog
+	url = https://github.com/gabime/spdlog.git
