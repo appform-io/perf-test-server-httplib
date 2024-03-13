@@ -12,39 +12,45 @@
 #include "spdlog/spdlog.h"
 
 void handler(int sig) {
-  void *array[10];
-  size_t size;
+    // print out all the frames to stderr
+    fprintf(stderr, "Exiting on: signal %d:\n", sig);
+    #ifdef NDEBUG
+    if(sig==SIGSEGV) {
+        // get void*'s for all entries on the stack
+        void *array[10];
+        size_t size = backtrace(array, 10);
 
-  // get void*'s for all entries on the stack
-  size = backtrace(array, 10);
-
-  // print out all the frames to stderr
-  fprintf(stderr, "Error: signal %d:\n", sig);
-  backtrace_symbols_fd(array, size, STDERR_FILENO);
-  exit(1);
+        backtrace_symbols_fd(array, size, STDERR_FILENO);
+    }
+    #endif
+    exit(1);
 }
 
 using namespace httplib;
 
 class AccessLogger {
 public:
-        AccessLogger(const Request& req, const Response& res)
-                :req_(req),
+        AccessLogger(bool nolog, const Request& req, const Response& res)
+                :nolog_(nolog),
+                req_(req),
                 res_(res),
                 startTime_(std::chrono::steady_clock::now())    {}
 
-        ~AccessLogger() {\
-                spdlog::info("{} {} {} {} {} {}",
+        ~AccessLogger() {
+                if(!nolog_) {
+                    spdlog::info("{} {} {} {} {} {}",
                         req_.method,
                         req_.path,
                         res_.status == -1 ? 200 : res_.status,
                         res_.body.size(),
                         req_.remote_addr,
                         std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - startTime_).count());
-                         
+
+                }                     
         }
 
 private:
+        const bool nolog_;
         const Request& req_;
         const Response& res_;
         std::chrono::steady_clock::time_point startTime_;
@@ -105,6 +111,8 @@ int main() {
     }
 
     signal(SIGSEGV, handler);   // install our handler
+    signal(SIGKILL, handler);   // install our handler
+    signal(SIGINT, handler);   // install our handler
 
     auto providedCores = env("CORES");
    
@@ -119,8 +127,11 @@ int main() {
 
     svr.new_task_queue = [&] { return new ThreadPool(cores); };
 
-    svr.Get("/", [](const Request& req, Response& res) {
-        AccessLogger logger(req, res);
+    auto noLogStr = env("NOLOG");
+    auto nolog = !noLogStr.empty();
+    svr.set_tcp_nodelay(true);
+    svr.Get("/", [nolog](const Request& req, Response& res) {
+        AccessLogger logger(nolog, req, res);
         res.set_content("Hello World!", "text/plain");
     });
 
@@ -132,8 +143,8 @@ int main() {
 
     AtomicCounter healthCtr;
 
-    svr.Get("/unhealthy", [&healthCtr, &maxHealthy](const Request& req, Response& res) {
-        AccessLogger logger(req, res);
+    svr.Get("/unhealthy", [nolog, &healthCtr, &maxHealthy](const Request& req, Response& res) {
+        AccessLogger logger(nolog, req, res);
         if ( healthCtr.increment() > maxHealthy ) {
            res.status = 500; 
         }

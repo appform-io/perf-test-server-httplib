@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:jammy
 
 COPY testfiles testfiles
 COPY test-server .

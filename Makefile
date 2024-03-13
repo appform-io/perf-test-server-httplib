@@ -1,6 +1,7 @@
 RM=rm -f
 CPPFLAGS=-Ivendors/cpp-httplib -Ivendors/spdlog/include
 CXXFLAGS=-O4 -Wall -Werror
+DEBUG_CXXFLAGS=-O0 -g3 -Wall -Werror
 LDLIBS=-lpthread
 
 SRC_DIR=src
@@ -14,16 +15,20 @@ SRCS=src/service.cpp
 
 OBJS=$(subst .cpp,.o,$(SRCS))
 
-.PHONY: all clean
+.PHONY: all clean docker
 
 
-all: $(EXE)
+all: docker
+
+docker: $(EXE)
+	docker build .
 
 $(EXE): $(OBJ)
-	$(CXX) -static $(LDFLAGS) $^ $(LDLIBS) -o $@
+	$(CXX) $(CXXFLAGS) -static $(LDFLAGS) $^ $(LDLIBS) -o $@
+
 
 %.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(CFLAGS) -c $< -o $@
 
 clean:
 	@$(RM) -rv $(EXE) $(OBJ)
