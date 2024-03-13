@@ -23,7 +23,7 @@ docker run -p 8000:8000 quay.io/santanu_sinha/perf-test-server-httplib
 
 To run on [podman](https://podman.io) replace `docker` with `podman` in the above command.
 
-> To stop container, press <Ctrl-C>
+> To stop container, press `<Ctrl-C>`
 
 ## Usage
 To access the container hit it using any load testing tool on port 8000 (or whatever host port you map the container port to).
