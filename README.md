@@ -1,10 +1,26 @@
 # REST Server for Performance Testing
 This project provides a simple REST based server for performance testing container infrastructure.
 
+## Getting the container
+
+The container is hosted on [quay.io](https://quay.io/repository/santanu_sinha/perf-test-server-httplib).
+
+Pull container using the following commands.
+
+### Docker
+```sh
+$ docker pull quay.io/santanu_sinha/perf-test-server-httplib
+```
+### Podman
+```sh
+$ podman pull quay.io/santanu_sinha/perf-test-server-httplib
+```
+
 ## Running the container
 ```
-docker run -p 8000:8000 quay.io/santanu_sinha/perf-test-server-httplib:0.1
+docker run -p 8000:8000 quay.io/santanu_sinha/perf-test-server-httplib
 ```
+
 To run on [podman](https://podman.io) replace `docker` with `podman` in the above command.
 
 > To stop container, press <Ctrl-C>
@@ -175,3 +191,6 @@ This will generate a binary called `test-server` in the current directory and a 
 
 ## License
 Apache 2.0
+
+## Base image
+This container uses [Redhat Universal Base Image](https://catalog.redhat.com/software/base-images)

@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM registry.access.redhat.com/ubi9/ubi-micro
 
 COPY testfiles testfiles
 COPY test-server .
