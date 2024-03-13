@@ -1,0 +1,74 @@
+{
+    "name": "PERF_TEST_APP",
+    "version": "3",
+    "type": "SERVICE",
+    "executable": {
+        "type": "DOCKER",
+        "url": "quay.io/santanu_sinha/perf-test-server-httplib:0.1",
+        "dockerPullTimeout": "100 seconds"
+    },
+    "exposedPorts": [
+        {
+            "name": "main",
+            "port": 8000,
+            "type": "HTTP"
+        }
+    ],
+    "resources": [
+        {
+            "type": "CPU",
+            "count": 2
+        },
+        {
+            "type": "MEMORY",
+            "sizeInMB": 512
+        }
+    ],
+    "placementPolicy": {
+        "type": "ANY"
+    },
+    "healthcheck": {
+        "mode": {
+            "type": "HTTP",
+            "protocol": "HTTP",
+            "portName": "main",
+            "path": "/",
+            "verb": "GET",
+            "successCodes": [
+                200
+            ],
+            "payload": "",
+            "connectionTimeout": "1 second"
+        },
+        "timeout": "1 second",
+        "interval": "10 seconds",
+        "attempts": 3,
+        "initialDelay": "0 seconds"
+    },
+    "readiness": {
+        "mode": {
+            "type": "HTTP",
+            "protocol": "HTTP",
+            "portName": "main",
+            "path": "/",
+            "verb": "GET",
+            "successCodes": [
+                200
+            ],
+            "payload": "",
+            "connectionTimeout": "1 second"
+        },
+        "timeout": "1 second",
+        "interval": "10 seconds",
+        "attempts": 3,
+        "initialDelay": "0 seconds"
+    },
+    "env": {
+        "NOLOG": "1"
+    },
+    "exposureSpec": {
+        "vhost": "perftest.appform.io",
+        "portName": "main",
+        "mode": "ALL"
+    }
+}
