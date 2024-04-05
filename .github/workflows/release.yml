@@ -17,10 +17,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Checkout submodules
-        uses: textbook/git-checkout-submodule-action@master
       - name: Build
         run: make
       - name: Log in to the Container registry
