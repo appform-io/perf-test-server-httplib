@@ -3,22 +3,22 @@ This project provides a simple REST based server for performance testing contain
 
 ## Getting the container
 
-The container is hosted on [quay.io](https://quay.io/repository/santanu_sinha/perf-test-server-httplib).
+The container is hosted on [ghcr.io](https://github.com/appform-io/perf-test-server-httplib/pkgs/container/perf-test-server-httplib).
 
 Pull container using the following commands.
 
 ### Docker
 ```sh
-$ docker pull quay.io/santanu_sinha/perf-test-server-httplib
+$ docker pull ghcr.io/appform-io/perf-test-server-httplib
 ```
 ### Podman
 ```sh
-$ podman pull quay.io/santanu_sinha/perf-test-server-httplib
+$ podman pull ghcr.io/appform-io/perf-test-server-httplib
 ```
 
 ## Running the container
 ```
-docker run -p 8000:8000 quay.io/santanu_sinha/perf-test-server-httplib
+docker run -p 8000:8000 ghcr.io/appform-io/perf-test-server-httplib
 ```
 
 To run on [podman](https://podman.io) replace `docker` with `podman` in the above command.
