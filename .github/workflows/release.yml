@@ -4,7 +4,9 @@ on:
     # Pattern matched against refs/tags
     tags:        
       - '*'           # Push events to every tag not containing /
-
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-and-push-image:
