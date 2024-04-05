@@ -29,7 +29,7 @@ To run on [podman](https://podman.io) replace `docker` with `podman` in the abov
 To access the container hit it using any load testing tool on port 8000 (or whatever host port you map the container port to).
 
 ### Sample `wrk` command
-```sh
+```shell
 $ wrk -c 100 -t20 -d 30 --latency  http://localhost:8000
 Running 30s test @ http://localhost:8000
   20 threads and 100 connections
@@ -47,7 +47,7 @@ Requests/sec:  35453.26
 Transfer/sec:      3.54MB
 ```
 ### Sample `ab` command
-```sh
+```shell
 $ ab -k -t 30 -n 1000000 -c 20 http://localhost:8000/
 This is ApacheBench, Version 2.3 <$Revision: 1879490 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
@@ -108,7 +108,7 @@ Percentage of the requests served within a certain time (ms)
 ## APIS
 ### Main API : `/`
 This returns an output (Hello World!) in text format.
-```sh
+```shell
 $ curl -vvv http://localhost:8000/
 *   Trying 127.0.0.1:8000...
 * Connected to localhost (127.0.0.1) port 8000 (#0)
@@ -128,7 +128,7 @@ Hello World!
 ```
 ### File download API: `/files/test.txt`
 This returns a simple small file.
-```sh
+```shell
 $ curl -vvv http://localhost:8000/files/test.txt
 *   Trying 127.0.0.1:8000...
 * Connected to localhost (127.0.0.1) port 8000 (#0)
@@ -153,7 +153,7 @@ If configuring probes for checking controller health, `/` can be set as healthch
 ### Controlling behaviour of the `/unhealthy` API
 By default, the API will return 200 OK 3 times and then it will start returning `HTTP 500 Server Error`.  To increase the count from 3 to any number, please pass an environment variable `HEALTHCOUNT` with the appropriate number.
 
-```sh
+```shell
 $ curl  -I http://localhost:8000/unhealthy 2>&1 |grep HTTP
 HTTP/1.1 200 OK
 $ curl  -I http://localhost:8000/unhealthy 2>&1 |grep HTTP
@@ -175,15 +175,15 @@ The following environment variables  canb used to control different aspects of t
 The server is written in C++. Code is hosted [here](https://github.com/appform-io/perf-test-server-httplib).
 
 ## Clone the code
-```sh
+```shell
 $ git clone git@github.com:appform-io/perf-test-server-httplib.git
 ```
 ## Fetch dependencies
-```sh
+```shell
 $ git submodule update --init --recursive
 ```
 ## Build
-```sh
+```shell
 make
 ```
 
