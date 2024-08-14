@@ -2,4 +2,4 @@
 
 env
 
-exec ./test-server
+exec ./test-server $@

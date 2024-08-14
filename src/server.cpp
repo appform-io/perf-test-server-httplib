@@ -100,7 +100,16 @@ private:
     volatile int counter_;
 };
 
-int main() {
+int main(int argc, char *argv[]) {
+    std::cout << "name of program: " << argv[0] << '\n' ;
+
+    if( argc > 1 )
+    {
+        std::cout << "there are " << argc-1 << " (more) arguments, they are:\n" ;
+
+        std::copy( argv+1, argv+argc, std::ostream_iterator<const char*>( std::cout, "\n" ) ) ;
+    }
+
     auto die = secure_getenv("DIE_FAST");
     if(NULL != die) {
         auto dieAfter = atoi(die);
